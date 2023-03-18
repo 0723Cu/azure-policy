@@ -1,0 +1,174 @@
+{
+  "properties": {
+    "displayName": "Configure Arc-enabled machines running SQL Server to have SQL Server extension installed.",
+    "policyType": "BuiltIn",
+    "mode": "Indexed",
+    "description": "To ensure that SQL Server - Azure Arc resources are created by default when SQL Server instance is found on Azure Arc enabled Windows/Linux Server, the latter should have SQL Server extension installed",
+    "metadata": {
+      "version": "3.3.0",
+      "category": "SQL"
+    },
+    "version": "3.3.0",
+    "parameters": {
+      "effect": {
+        "type": "string",
+        "defaultValue": "DeployIfNotExists",
+        "allowedValues": [
+          "DeployIfNotExists",
+          "Disabled"
+        ],
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        }
+      },
+      "licenseType": {
+        "type": "String",
+        "metadata": {
+          "displayName": "License type",
+          "description": "Specify the SQL Server license type you are using on this machine."
+        },
+        "allowedValues": [
+          "Paid",
+          "PAYG",
+          "LicenseOnly"
+        ],
+        "defaultValue": "Paid"
+      },
+      "excludedSqlInstances": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Excluded SQL Instance names",
+          "description": "Specify the names of SQL Server instances that you want to exclude from onboarding to Azure Arc."
+        },
+        "defaultValue": []
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.HybridCompute/machines"
+          },
+          {
+            "field": "Microsoft.HybridCompute/machines/mssqlDiscovered",
+            "equals": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.HybridCompute/machines/extensions",
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293",
+            "/providers/Microsoft.Authorization/roleDefinitions/18d7d88d-d35e-4fb5-a5c3-7773c20a72d9"
+          ],
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.HybridCompute/machines/extensions/publisher",
+                "equals": "Microsoft.AzureData"
+              },
+              {
+                "field": "Microsoft.HybridCompute/machines/extensions/provisioningState",
+                "in": [
+                  "Creating",
+                  "Succeeded"
+                ]
+              },
+              {
+                "anyOf": [
+                  {
+                    "field": "Microsoft.HybridCompute/machines/extensions/type",
+                    "equals": "WindowsAgent.SqlServer"
+                  },
+                  {
+                    "field": "Microsoft.HybridCompute/machines/extensions/type",
+                    "equals": "LinuxAgent.SqlServer"
+                  }
+                ]
+              }
+            ]
+          },
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "vmName": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "agentName": {
+                    "type": "string"
+                  },
+                  "licenseType": {
+                    "type": "string"
+                  },
+                  "excludedSqlInstances": {
+                    "type": "array"
+                  }
+                },
+                "variables": {
+                  "vmExtensionName": "[parameters('agentName')]",
+                  "vmExtensionPublisher": "Microsoft.AzureData",
+                  "vmExtensionType": "[parameters('agentName')]"
+                },
+                "resources": [
+                  {
+                    "name": "[concat(parameters('vmName'), '/', variables('vmExtensionName'))]",
+                    "type": "Microsoft.HybridCompute/machines/extensions",
+                    "location": "[parameters('location')]",
+                    "apiVersion": "2019-12-12",
+                    "properties": {
+                      "publisher": "[variables('vmExtensionPublisher')]",
+                      "type": "[variables('vmExtensionType')]",
+                      "settings": {
+                        "SqlManagement": {
+                          "IsEnabled": true
+                        },
+                        "ExcludedSqlInstances": "[parameters('excludedSqlInstances')]",
+                        "LicenseType": "[parameters('licenseType')]"
+                      }
+                    }
+                  }
+                ],
+                "outputs": {
+                  "policy": {
+                    "type": "string",
+                    "value": "[concat('Enabled extension for VM', ': ', parameters('vmName'))]"
+                  }
+                }
+              },
+              "parameters": {
+                "vmName": {
+                  "value": "[field('name')]"
+                },
+                "location": {
+                  "value": "[field('location')]"
+                },
+                "agentName": {
+                  "value": "[if(startsWith(field('Microsoft.HybridCompute/machines/osName'),'windows'), 'WindowsAgent.SqlServer', 'LinuxAgent.SqlServer')]"
+                },
+                "licenseType": {
+                  "value": "[parameters('licenseType')]"
+                },
+                "excludedSqlInstances": {
+                  "value": "[parameters('excludedSqlInstances')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/fd2d1a6e-6d95-4df2-ad00-504bf0273406",
+  "name": "fd2d1a6e-6d95-4df2-ad00-504bf0273406"
+}

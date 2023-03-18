@@ -8,6 +8,7 @@
       "version": "1.1.0",
       "category": "VM Image Builder"
     },
+    "version": "1.1.0",
     "parameters": {
       "effect": {
         "type": "String",
@@ -41,6 +42,6 @@
       }
     }
   },
-    "id": "/providers/Microsoft.Authorization/policyDefinitions/2154edb9-244f-4741-9970-660785bccdaa",
-    "name": "2154edb9-244f-4741-9970-660785bccdaa"
-  }
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/2154edb9-244f-4741-9970-660785bccdaa",
+  "name": "2154edb9-244f-4741-9970-660785bccdaa"
+}

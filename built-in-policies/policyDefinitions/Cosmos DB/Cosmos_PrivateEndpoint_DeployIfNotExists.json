@@ -8,6 +8,7 @@
       "version": "1.0.0",
       "category": "Cosmos DB"
     },
+    "version": "1.0.0",
     "parameters": {
       "privateEndpointSubnetId": {
         "type": "String",
@@ -20,8 +21,8 @@
       "privateEndpointGroupId": {
         "type": "String",
         "metadata": {
-        "displayName": "privateEndpointGroupId",
-        "description": "A group Id for the private endpoint"
+          "displayName": "privateEndpointGroupId",
+          "description": "A group Id for the private endpoint"
         }
       },
       "effect": {

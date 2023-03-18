@@ -1,13 +1,15 @@
 {
   "properties": {
-    "displayName": "Unattached disks should be encrypted",
+    "displayName": "[Deprecated]: Unattached disks should be encrypted",
     "policyType": "BuiltIn",
     "mode": "Indexed",
     "description": "This policy audits any unattached disk without encryption enabled.",
     "metadata": {
-      "version": "1.0.0",
-      "category": "Compute"
+      "version": "1.0.0-deprecated",
+      "category": "Compute",
+      "deprecated": true
     },
+    "version": "1.0.0",
     "parameters": {
       "effect": {
         "type": "string",

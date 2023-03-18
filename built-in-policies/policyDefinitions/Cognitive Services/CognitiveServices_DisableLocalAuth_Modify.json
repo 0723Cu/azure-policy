@@ -8,11 +8,12 @@
       "version": "1.0.0",
       "category": "Cognitive Services"
     },
+    "version": "1.0.0",
     "parameters": {
       "effect": {
         "type": "String",
         "defaultValue": "Modify",
-         "allowedValues": [
+        "allowedValues": [
           "Modify",
           "Disabled"
         ],

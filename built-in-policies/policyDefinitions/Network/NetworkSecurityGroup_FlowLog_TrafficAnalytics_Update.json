@@ -1,13 +1,14 @@
 {
   "properties": {
-    "displayName": "Configure network security groups to use specific workspace for traffic analytics",
+    "displayName": "Configure network security groups to use specific workspace, storage account and flowlog retention policy for traffic analytics",
     "description": "If it already has traffic analytics enabled, then policy will overwrite its existing settings with the ones provided during policy creation. Traffic analytics is a cloud-based solution that provides visibility into user and application activity in cloud networks.",
     "policyType": "BuiltIn",
     "mode": "Indexed",
     "metadata": {
-      "version": "1.0.0",
+      "version": "1.2.0",
       "category": "Network"
     },
+    "version": "1.2.0",
     "parameters": {
       "effect": {
         "type": "string",
@@ -34,7 +35,7 @@
         "metadata": {
           "displayName": "Storage Resource ID",
           "description": "Resource ID of the storage account where the flow logs are written. Make sure this storage account is located in the selected network security group region. The format must be: '/subscriptions/{subscription id}/resourceGroups/{resourceGroup name}/providers/Microsoft.Storage/storageAccounts/{storage account name}",
-          "assignPermissions": "true"
+          "assignPermissions": true
         }
       },
       "timeInterval": {
@@ -54,7 +55,7 @@
         "metadata": {
           "displayName": "Workspace resource ID",
           "description": "Log Analytics workspace resource id",
-          "assignPermissions": "true"
+          "assignPermissions": true
         }
       },
       "workspaceRegion": {
@@ -86,6 +87,14 @@
           "displayName": "Network Watcher name",
           "description": "The name of the network watcher under which the flow log resources are created. Make sure it belongs to the same region as the network security group."
         }
+      },
+      "retentionDays": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Number of days to retain flowlogs",
+          "description": "The number of days for which flowlog data will be retained in storage account. If you want to retain data forever and do not want to apply any retention policy, set retention (days) to 0."
+        },
+        "defaultValue": "30"
       }
     },
     "policyRule": {
@@ -129,17 +138,63 @@
                   },
                   {
                     "field": "Microsoft.Network/networkWatchers/flowLogs/flowAnalyticsConfiguration.networkWatcherFlowAnalyticsConfiguration.trafficAnalyticsInterval",
-                    "in": [ "10", "60" ]
+                    "in": [
+                      "10",
+                      "60"
+                    ]
                   },
                   {
                     "field": "Microsoft.Network/networkWatchers/flowLogs/flowAnalyticsConfiguration.networkWatcherFlowAnalyticsConfiguration.workspaceId",
                     "equals": "[parameters('workspaceId')]"
+                  },
+                  {
+                    "anyof": [
+                      {
+                        "allof": [
+                          {
+                            "value": "[parameters('retentionDays')]",
+                            "equals": "0"
+                          },
+                          {
+                            "anyof": [
+                              {
+                                "field": "Microsoft.Network/networkWatchers/flowLogs/retentionPolicy.days",
+                                "equals": "0"
+                              },
+                              {
+                                "field": "Microsoft.Network/networkWatchers/flowLogs/retentionPolicy.enabled",
+                                "equals": "false"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "allof": [
+                          {
+                            "value": "[parameters('retentionDays')]",
+                            "notequals": "0"
+                          },
+                          {
+                            "allof": [
+                              {
+                                "field": "Microsoft.Network/networkWatchers/flowLogs/retentionPolicy.days",
+                                "notequals": "0"
+                              },
+                              {
+                                "field": "Microsoft.Network/networkWatchers/flowLogs/retentionPolicy.enabled",
+                                "equals": "true"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
             ]
           },
-
           "roleDefinitionIds": [
             "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
           ],
@@ -179,6 +234,9 @@
                   },
                   "targetResource": {
                     "type": "string"
+                  },
+                  "retentionDays": {
+                    "type": "string"
                   }
                 },
                 "resources": [
@@ -214,8 +272,8 @@
                                 }
                               },
                               "retentionPolicy": {
-                                "days": "0",
-                                "enabled": "false"
+                                "days": "[parameters('retentionDays')]",
+                                "enabled": "true"
                               },
                               "format": {
                                 "type": "JSON",
@@ -252,13 +310,16 @@
                   "value": "[if(empty(coalesce(field('Microsoft.Network/networkSecurityGroups/flowLogs'))), parameters('networkWatcherName'), split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[8])]"
                 },
                 "flowlogName": {
-                  "value": "[if(empty(coalesce(field('Microsoft.Network/networkSecurityGroups/flowLogs'))), concat(field('name'), '-', resourceGroup().name, '-', 'flowlog'), split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[10])]"
+                  "value": "[if(empty(coalesce(field('Microsoft.Network/networkSecurityGroups/flowLogs'))), concat(take(concat(field('name'), '-', resourceGroup().name), 72), '-', 'flowlog'), split(first(field('Microsoft.Network/networkSecurityGroups/flowLogs[*].id')), '/')[10])]"
                 },
                 "location": {
                   "value": "[field('location')]"
                 },
                 "targetResource": {
                   "value": "[concat(resourceGroup().id, '/providers/Microsoft.Network/networkSecurityGroups/', field('name'))]"
+                },
+                "retentionDays": {
+                  "value": "[parameters('retentionDays')]"
                 }
               }
             }
@@ -267,7 +328,6 @@
       }
     }
   },
-  
-  "id": "/providers/Microsoft.Authorization/policyDefinitions/5e1cd26a-5090-4fdb-9d6a-84a90335e22d", 
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/5e1cd26a-5090-4fdb-9d6a-84a90335e22d",
   "name": "5e1cd26a-5090-4fdb-9d6a-84a90335e22d"
 }

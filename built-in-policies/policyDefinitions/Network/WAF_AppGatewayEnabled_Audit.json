@@ -5,9 +5,10 @@
     "policyType": "BuiltIn",
     "mode": "Indexed",
     "metadata": {
-      "version": "1.0.1",
+      "version": "2.0.0",
       "category": "Network"
     },
+    "version": "2.0.0",
     "parameters": {
       "effect": {
         "type": "String",
@@ -32,6 +33,10 @@
           },
           {
             "field": "Microsoft.Network/applicationGateways/webApplicationFirewallConfiguration",
+            "exists": "false"
+          },
+          {
+            "field": "Microsoft.Network/applicationGateways/firewallPolicy",
             "exists": "false"
           }
         ]

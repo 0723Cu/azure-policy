@@ -8,6 +8,7 @@
       "version": "1.0.1",
       "category": "Container Registry"
     },
+    "version": "1.0.1",
     "parameters": {
       "effect": {
         "type": "string",
@@ -46,6 +47,6 @@
       }
     }
   },
-    "id": "/providers/Microsoft.Authorization/policyDefinitions/e8eef0a8-67cf-4eb4-9386-14b0e78733d4",
-    "name": "e8eef0a8-67cf-4eb4-9386-14b0e78733d4"
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/e8eef0a8-67cf-4eb4-9386-14b0e78733d4",
+  "name": "e8eef0a8-67cf-4eb4-9386-14b0e78733d4"
 }

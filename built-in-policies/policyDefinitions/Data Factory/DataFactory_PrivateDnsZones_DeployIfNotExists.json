@@ -6,6 +6,7 @@
       "version": "1.0.0",
       "category": "Data Factory"
     },
+    "version": "1.0.0",
     "policyType": "BuiltIn",
     "mode": "Indexed",
     "parameters": {
@@ -32,8 +33,8 @@
       "listOfGroupIds": {
         "type": "Array",
         "metadata": {
-            "description": "The list of Group Ids that can be specified for Private Endpoints.",
-            "displayName": "Allowed Group Ids"
+          "description": "The list of Group Ids that can be specified for Private Endpoints.",
+          "displayName": "Allowed Group Ids"
         },
         "allowedValues": [
           "dataFactory",

@@ -5,10 +5,10 @@
     "mode": "Indexed",
     "description": "Enable source control on data factories, to gain capabilities such as change tracking, collaboration, continuous integration, and deployment.",
     "metadata": {
-      "version": "1.0.0-preview",
-      "category": "Data Factory",
-      "preview": true
+      "version": "1.0.0",
+      "category": "Data Factory"
     },
+    "version": "1.0.0",
     "parameters": {
       "effect": {
         "type": "String",

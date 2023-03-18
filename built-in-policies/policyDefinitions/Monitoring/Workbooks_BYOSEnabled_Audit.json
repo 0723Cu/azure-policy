@@ -5,9 +5,10 @@
     "mode": "Indexed",
     "description": "With bring your own storage (BYOS), your workbooks are uploaded into a storage account that you control. That means you control the encryption-at-rest policy, the lifetime management policy, and network access. You will, however, be responsible for the costs associated with that storage account. For more information, visit https://aka.ms/workbooksByos",
     "metadata": {
-      "version": "1.0.0",
+      "version": "1.1.0",
       "category": "Monitoring"
     },
+    "version": "1.1.0",
     "parameters": {
       "effect": {
         "type": "String",
@@ -17,10 +18,13 @@
         },
         "allowedValues": [
           "deny",
+          "Deny",
           "audit",
-          "disabled"
+          "Audit",
+          "disabled",
+          "Disabled"
         ],
-        "defaultValue": "audit"
+        "defaultValue": "Audit"
       }
     },
     "policyRule": {

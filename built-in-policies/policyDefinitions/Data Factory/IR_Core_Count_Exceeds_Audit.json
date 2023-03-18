@@ -5,10 +5,10 @@
     "mode": "All",
     "description": "To manage your resources and costs, limit the number of cores for an integration runtime.",
     "metadata": {
-      "version": "1.0.0-preview",
-      "category": "Data Factory",
-      "preview": true
+      "version": "1.0.0",
+      "category": "Data Factory"
     },
+    "version": "1.0.0",
     "parameters": {
       "effect": {
         "type": "String",

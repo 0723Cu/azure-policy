@@ -1,6 +1,6 @@
 {
   "properties": {
-    "displayName": "Private endpoint should be enabled for MySQL servers",
+    "displayName": "[Deprecated]: Private endpoint should be enabled for MySQL servers",
     "policyType": "BuiltIn",
     "mode": "Indexed",
     "description": "Private endpoint connections enforce secure communication by enabling private connectivity to Azure Database for MySQL. Configure a private endpoint connection to enable access to traffic coming only from known networks and prevent access from all other IP addresses, including within Azure.",
@@ -9,6 +9,7 @@
       "category": "SQL",
       "deprecated": true
     },
+    "version": "1.0.1",
     "parameters": {
       "effect": {
         "type": "string",

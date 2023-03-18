@@ -8,6 +8,7 @@
       "version": "1.0.0",
       "category": "Media Services"
     },
+    "version": "1.0.0",
     "parameters": {
       "effect": {
         "type": "string",
@@ -53,8 +54,8 @@
           },
           {
             "count": {
-              "field" : "Microsoft.Media/mediaServices/contentKeyPolicies/options[*]",
-              "where" : {
+              "field": "Microsoft.Media/mediaServices/contentKeyPolicies/options[*]",
+              "where": {
                 "not": {
                   "allOf": [
                     {

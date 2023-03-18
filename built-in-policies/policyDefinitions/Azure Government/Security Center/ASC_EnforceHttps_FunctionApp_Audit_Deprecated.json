@@ -1,6 +1,6 @@
 {
   "properties": {
-    "displayName": "[Deprecated]: Function App should only be accessible over HTTPS",
+    "displayName": "[Deprecated]: [Deprecated]: Function App should only be accessible over HTTPS",
     "policyType": "BuiltIn",
     "mode": "All",
     "description": "Use of HTTPS ensures server/service authentication and protects data in transit from network layer eavesdropping attacks.",
@@ -9,6 +9,7 @@
       "category": "Security Center",
       "deprecated": true
     },
+    "version": "1.0.0",
     "parameters": {
       "effect": {
         "type": "string",

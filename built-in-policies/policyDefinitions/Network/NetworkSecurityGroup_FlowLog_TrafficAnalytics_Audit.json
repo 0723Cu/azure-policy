@@ -8,6 +8,7 @@
       "version": "1.0.0",
       "category": "Network"
     },
+    "version": "1.0.0",
     "parameters": {
       "effect": {
         "type": "string",
@@ -37,7 +38,10 @@
               },
               {
                 "field": "Microsoft.Network/networkWatchers/flowLogs/flowAnalyticsConfiguration.networkWatcherFlowAnalyticsConfiguration.trafficAnalyticsInterval",
-                "notin": [ "10", "60" ]
+                "notin": [
+                  "10",
+                  "60"
+                ]
               }
             ]
           }

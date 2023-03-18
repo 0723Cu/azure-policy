@@ -8,18 +8,19 @@
       "version": "1.0.0",
       "category": "Cosmos DB"
     },
+    "version": "1.0.0",
     "parameters": {
-    "effect": {
-      "type": "String",
-      "metadata": {
-        "displayName": "Effect",
-        "description": "Enable or disable the execution of the policy"
-      },
-      "allowedValues": [
-        "Modify",
-        "Disabled"
-      ],
-      "defaultValue": "Modify"
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Modify",
+          "Disabled"
+        ],
+        "defaultValue": "Modify"
       }
     },
     "policyRule": {

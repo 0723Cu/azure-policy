@@ -6,6 +6,7 @@
       "version": "1.0.0",
       "category": "App Configuration"
     },
+    "version": "1.0.0",
     "policyType": "BuiltIn",
     "mode": "Indexed",
     "parameters": {
@@ -43,12 +44,12 @@
           ],
           "conflictEffect": "audit",
           "operations": [
-              {
-                  "condition": "[greater(requestContext().apiVersion, '2019-10-01')]",
-                  "operation": "addOrReplace",
-                  "field": "Microsoft.AppConfiguration/configurationStores/publicNetworkAccess",
-                  "value": "Disabled"
-              }
+            {
+              "condition": "[greater(requestContext().apiVersion, '2019-10-01')]",
+              "operation": "addOrReplace",
+              "field": "Microsoft.AppConfiguration/configurationStores/publicNetworkAccess",
+              "value": "Disabled"
+            }
           ]
         }
       }

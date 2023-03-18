@@ -1,13 +1,14 @@
 {
   "properties": {
-    "displayName": "Azure SQL Database should have the minimal TLS version of 1.2",
-    "description": "Setting minimal TLS version to 1.2 improves security by ensuring your Azure SQL Database can only be accessed from clients using TLS 1.2. Using versions of TLS less than 1.2 is not recommended since they have well documented security vulnerabilities.",
+    "displayName": "Azure SQL Database should be running TLS version 1.2 or newer",
+    "description": "Setting TLS version to 1.2 or newer improves security by ensuring your Azure SQL Database can only be accessed from clients using TLS 1.2 or newer. Using versions of TLS less than 1.2 is not recommended since they have well documented security vulnerabilities.",
     "policyType": "BuiltIn",
     "mode": "Indexed",
     "metadata": {
-      "version": "1.0.1",
+      "version": "2.0.0",
       "category": "SQL"
     },
+    "version": "2.0.0",
     "parameters": {
       "effect": {
         "type": "String",
@@ -17,7 +18,8 @@
         },
         "allowedValues": [
           "Audit",
-          "Disabled"
+          "Disabled",
+          "Deny"
         ],
         "defaultValue": "Audit"
       }
@@ -37,7 +39,7 @@
               },
               {
                 "field": "Microsoft.Sql/servers/minimalTlsVersion",
-                "notEquals": "1.2"
+                "less": "1.2"
               }
             ]
           }

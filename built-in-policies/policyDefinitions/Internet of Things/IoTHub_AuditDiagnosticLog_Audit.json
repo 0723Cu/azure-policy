@@ -8,11 +8,15 @@
       "version": "3.0.1",
       "category": "Internet of Things"
     },
+    "version": "3.0.1",
     "parameters": {
       "effect": {
         "type": "string",
         "defaultValue": "AuditIfNotExists",
-        "allowedValues": ["AuditIfNotExists", "Disabled"],
+        "allowedValues": [
+          "AuditIfNotExists",
+          "Disabled"
+        ],
         "metadata": {
           "displayName": "Effect",
           "description": "Enable or disable the execution of the policy"

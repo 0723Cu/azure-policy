@@ -1,13 +1,14 @@
 {
   "properties": {
-    "displayName": "Deploy Workflow Automation for Azure Security Center alerts",
+    "displayName": "Deploy Workflow Automation for Microsoft Defender for Cloud alerts",
     "policyType": "BuiltIn",
     "mode": "All",
-    "description": "Enable automation of Azure Security Center alerts. This policy deploys a workflow automation with your conditions and triggers on the assigned scope. To deploy this policy on newly created subscriptions, open the Compliance tab, select the relevant non-compliant assignment and create a remediation task.",
+    "description": "Enable automation of Microsoft Defender for Cloud alerts. This policy deploys a workflow automation with your conditions and triggers on the assigned scope. To deploy this policy on newly created subscriptions, open the Compliance tab, select the relevant non-compliant assignment and create a remediation task.",
     "metadata": {
-      "version": "3.0.0",
+      "version": "5.0.0",
       "category": "Security Center"
     },
+    "version": "5.0.0",
     "parameters": {
       "automationName": {
         "type": "String",
@@ -31,11 +32,23 @@
           "strongType": "location"
         }
       },
+      "createResourceGroup": {
+        "type": "Boolean",
+        "metadata": {
+          "displayName": "Create resource group",
+          "description": "If a resource group does not exists in the scope, a new resource group will be created. If the resource group exists and this flag is set to 'true' the policy will re-deploy the resource group. Please note this will reset any Azure Tag on the resource group."
+        },
+        "allowedValues": [
+          true,
+          false
+        ],
+        "defaultValue": true
+      },
       "alertName": {
         "type": "String",
         "metadata": {
           "displayName": "Alert name contains",
-          "description": "String included in the required alert name. For a full reference list of Security Center's alerts, see https://docs.microsoft.com/azure/security-center/alerts-reference."
+          "description": "String included in the required alert name. For a full reference list of Microsoft Defender for Cloud's alerts, see https://docs.microsoft.com/azure/security-center/alerts-reference."
         },
         "defaultValue": ""
       },
@@ -151,6 +164,9 @@
                   "resourceGroupLocation": {
                     "type": "string"
                   },
+                  "createResourceGroup": {
+                    "type": "bool"
+                  },
                   "alertName": {
                     "type": "string"
                   },
@@ -179,17 +195,16 @@
                   },
                   "triggerMap": {
                     "Manual (Incoming HTTP request)": "manual",
-                    "When an Azure Security Center Alert is created or triggered": "When_an_Azure_Security_Center_Alert_is_created_or_triggered"
+                    "When an Azure Security Center Alert is created or triggered": "When_an_Microsoft_Defender_for_Clou_dAlert_is_created_or_triggered"
                   }
                 },
                 "resources": [
                   {
+                    "condition": "[parameters('createResourceGroup')]",
                     "name": "[parameters('resourceGroupName')]",
                     "type": "Microsoft.Resources/resourceGroups",
                     "apiVersion": "2019-10-01",
-                    "location": "[parameters('resourceGroupLocation')]",
-                    "tags": { },
-                    "properties": { }
+                    "location": "[parameters('resourceGroupLocation')]"
                   },
                   {
                     "type": "Microsoft.Resources/deployments",
@@ -204,18 +219,18 @@
                       "template": {
                         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
                         "contentVersion": "1.0.0.0",
-                        "parameters": { },
-                        "variables": { },
+                        "parameters": {},
+                        "variables": {},
                         "resources": [
                           {
-                            "tags": { },
+                            "tags": {},
                             "apiVersion": "2019-01-01-preview",
                             "location": "[parameters('resourceGroupLocation')]",
                             "name": "[parameters('automationName')]",
                             "type": "Microsoft.Security/automations",
-                            "dependsOn": [ ],
+                            "dependsOn": [],
                             "properties": {
-                              "description": "Workflow Automation for Azure Security Center alerts via policy",
+                              "description": "Workflow Automation for Microsoft Defender for Cloud alerts via policy",
                               "isEnabled": true,
                               "scopes": [
                                 {
@@ -274,6 +289,9 @@
                 },
                 "resourceGroupLocation": {
                   "value": "[parameters('resourceGroupLocation')]"
+                },
+                "createResourceGroup": {
+                  "value": "[parameters('createResourceGroup')]"
                 },
                 "alertName": {
                   "value": "[parameters('alertName')]"
